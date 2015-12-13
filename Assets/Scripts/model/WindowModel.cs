@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UnityEngine;
+
+namespace Assets.Scripts.model
+{
+	class WindowModel : MonoBehaviour
+	{
+		public bool isActivate { get; set; }
+
+		public WindowModel()
+		{
+			isActivate = true;
+		}
+	}
+}
