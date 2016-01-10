@@ -12,9 +12,10 @@ namespace Assets.Scripts.controller
 	{
 		void Start()
 		{
-			this.model = GameObject.FindObjectOfType<GiftModel>();
-			this.wind = GameObject.FindObjectOfType<Wind>();
+			model = GameObject.FindObjectOfType<GiftModel>();
 			view = new BigGiftView();
+			wind = GameObject.FindObjectOfType<Wind>();
+			spawner = GameObject.FindObjectOfType<Spawner>();
 			gameObject.GetComponent<SpriteRenderer>().sprite = view.sprite;
 			setBoxCollider();
 		}

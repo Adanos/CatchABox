@@ -10,11 +10,10 @@ namespace Assets.Scripts.controller
 {
 	abstract class GiftController : MonoBehaviour
 	{
-		//private static int _id = 1;
-		//private int id;
 		protected GiftModel model { get; set; }
 		protected GiftView view { get; set; }
 		protected Wind wind { get; set; }
+		protected Spawner spawner;
 
 		protected void setBoxCollider()
 		{
@@ -54,7 +53,6 @@ namespace Assets.Scripts.controller
 
 		void OnMouseDrag()
 		{
-			Debug.Log("przesuwam " );
 			float distanceToScreen = Camera.main.WorldToScreenPoint(transform.position).z;
 			Vector3 positionMove = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceToScreen));
 			model.setX(positionMove.x);
@@ -63,33 +61,29 @@ namespace Assets.Scripts.controller
 
 		void Update()
 		{
-			if (Input.GetMouseButtonDown(0))
-			{
-				RaycastHit hitInfo = new RaycastHit();
-				bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
-				if (hit)
-				{
-					model.setClicked(true);
-					//Debug.Log("Hit " + hitInfo.transform.gameObject.name);
-					if (hitInfo.transform.gameObject.tag == "Construction")
-					{
-					//	Debug.Log("It's working!");
-					}
-					else
-					{
-					//	Debug.Log("nopz");
-					}
-				}
-				else
-				{
-				//	Debug.Log("No hit");
-				}
-				//Debug.Log("Mouse is down");
-			} 
+			if (checkPossibilityRemoveGift())
+				removeGift();
 
 			if (model != null && !model.isClicked)
 				move(wind.getMovement(), model.velocity);
-			//Debug.Log("przesuwam" + model.y);
+		}
+
+		private void removeGift()
+		{
+			GameObject currentGameObject = spawner.gifts.Find(x => x == gameObject);
+			spawner.gifts.Remove(gameObject);
+
+			Destroy(currentGameObject);
+		}
+
+		private bool checkPossibilityRemoveGift()
+		{
+			if (model.x > BoardController.rightXPositionOfBoard || model.x < BoardController.leftXPositionOfBoard)
+			{
+				return true;
+			}
+
+			return false;
 		}
 	}
 }
